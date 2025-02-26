@@ -1,69 +1,310 @@
 <!DOCTYPE html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>I love you</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
+    <style>
+        body {
+            background-image: url('./pic/iso-republic-abstract-wallpaper-soft-blur.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            position: relative;
+        }
+        
+        .navbar {
+            background-color: rgba(255, 192, 203, 0.9) !important;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+        
+        .message-card {
+            background-color: rgba(255, 255, 255, 0.85);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: all 0.5s ease;
+        }
+        
+        .message-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.2);
+        }
+        
+        .img-thumbnail {
+            border-radius: 15px;
+            transition: all 0.5s ease;
+        }
+        
+        .img-thumbnail:hover {
+            transform: scale(1.03);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.2) !important;
+        }
+        
+        .heart-float {
+            animation: float 6s ease-in-out infinite;
+            position: fixed;
+            z-index: -1;
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .birthday-title {
+            font-size: 2.5rem;
+            color: #ff6b9d;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.1);
+        }
+        
+        .content-section {
+            padding: 60px 0;
+        }
+        
+        .footer {
+            background-color: rgba(255, 192, 203, 0.9);
+            padding: 20px 0;
+            margin-top: 40px;
+            text-align: center;
+            color: #fff;
+            border-top: 2px solid #fff;
+        }
+        
+        .countdown {
+            background-color: rgba(255, 255, 255, 0.7);
+            padding: 15px;
+            border-radius: 15px;
+            margin-top: 20px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+        
+        .countdown-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ff6b9d;
+        }
+        
+        .photo-memories {
+            margin-top: 30px;
+        }
+        
+        .celebration-icon {
+            font-size: 2rem;
+            color: #ff6b9d;
+            margin: 0 10px;
+            animation: bounce 2s infinite;
+        }
+        
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {transform: translateY(0);}
+            40% {transform: translateY(-20px);}
+            60% {transform: translateY(-10px);}
+        }
+    </style>
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg sticky-top" style="background-color: pink;">
-        <div class="container-fluid bg-opacity-50">
-            <img src="./pic/giphy.gif" class="img-thumbnail shadow-lg" alt="" style="height:50px;width:50px">
-            <a class="navbar-brand p-2" href="./index.html"></i>Xinyu happy birthday</a>
+    <!-- Hearts floating in background -->
+    <div class="position-fixed w-100 h-100" style="z-index: -1; pointer-events: none;">
+        <i class="bi bi-heart-fill heart-float text-danger opacity-25" style="font-size: 3rem; top: 10%; left: 5%;"></i>
+        <i class="bi bi-heart-fill heart-float text-danger opacity-25" style="font-size: 2rem; top: 30%; left: 15%; animation-delay: 1s;"></i>
+        <i class="bi bi-heart-fill heart-float text-danger opacity-25" style="font-size: 4rem; top: 50%; left: 80%; animation-delay: 2s;"></i>
+        <i class="bi bi-heart-fill heart-float text-danger opacity-25" style="font-size: 2.5rem; top: 70%; left: 60%; animation-delay: 3s;"></i>
+        <i class="bi bi-heart-fill heart-float text-danger opacity-25" style="font-size: 3.5rem; top: 20%; left: 90%; animation-delay: 4s;"></i>
+    </div>
+
+    <nav class="navbar navbar-expand-lg sticky-top">
+        <div class="container-fluid">
+            <img src="./pic/giphy.gif" class="img-thumbnail shadow-lg rounded-circle" alt="" style="height:50px;width:50px">
+            <a class="navbar-brand p-2 fw-bold" href="./index.html">
+                <span class="animate__animated animate__heartBeat animate__infinite">Xinyu happy birthday</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav">
-                <li class="nav-item">
-                <a class="nav-link active" aria-current="page" href="./index.html">Home</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="https://jemmy9211.github.io/Writer/">about</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link" href="./about.html">picture</a>
-                </li>
-                <li class="nav-item">
-                <a class="nav-link">mika</a>
-                </li>
-            </ul>
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="./index.html">
+                            <i class="bi bi-house-heart-fill"></i> Home
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="https://jemmy9211.github.io/Writer/">
+                            <i class="bi bi-info-circle-fill"></i> About
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./about.html">
+                            <i class="bi bi-image-fill"></i> Pictures
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="./mika.html">
+                            <i class="bi bi-heart-fill"></i> Mika
+                        </a>
+                    </li>
+                </ul>
             </div>
-            <img src="./pic/giphy (1).gif" class="img-thumbnail shadow-lg" alt="" style="height:50px;width:50px;float: right;">
+            <img src="./pic/giphy (1).gif" class="img-thumbnail shadow-lg rounded-circle d-none d-md-block" alt="" style="height:50px;width:50px;">
         </div>
     </nav>
-    <div class="row p-5">
-        <div class="col-lg-4 d-grid bg-opacity-50 border border-light rounded-3 border-5 shadow-lg p-5 mb-5 bg-body rounded">
-                <i class="bi bi-heart-fill">親愛的欣妤</i><br><br>
-                今天是你的生日，記得去年我生日時，你是第一個傳訊息給我的，那時候的我面臨著課業和升學的壓力，
-                你的一句生日快樂，帶給生活在迷惘生活和壓力中的我溫暖，那時候就認定你是我生命中特別的人，今天是你生日
-                代表你又長大了一歲，過去幾個月我們都很忙，但久了好像也成為了日常，未來的日子，你轉到電機系，我也
-                成為研究生，生活可能也會如同之前一樣充實，但沒關係，我們還是能偶爾出來走走，雖然我一直要你不要哭哭
-                但難過的時候可以來找我沒關係我都會收留你的，這些文字是在半夜完成的，想必你現在正在抱著我的衣服熟睡吧
-                ，我只想跟你說我愛你，就如同你愛我一樣，雖然未來的挑戰還很多，但也不需要去想那麼多了，勇敢面對，我相信
-                都能有最好的安排的~
-                <br>
-                生日快樂~
-                <br>
-                <br>
-                <blockquote><footer>陳冠軒 2022/3/7 1:32am</footer></blockquote>
-        </div>
-        <div class="col-lg-4 d-grid">
-            <img src="./pic/together.jpg" class="img-thumbnail shadow-lg" alt="">
-        </div>
-        <div class="col-lg-4 d-grid">
-            <div class="row">
+
+    <div class="container content-section">
+        <!-- Birthday header with animation -->
+        <div class="text-center animate__animated animate__fadeIn mb-5">
+            <h1 class="birthday-title">
+                <i class="celebration-icon bi bi-balloon-heart-fill"></i>
+                Happy Birthday Xinyu!
+                <i class="celebration-icon bi bi-balloon-heart-fill"></i>
+            </h1>
+            <div class="d-flex justify-content-center">
+                <div class="celebration-icon"><i class="bi bi-gift-fill"></i></div>
+                <div class="celebration-icon" style="animation-delay: 0.3s;"><i class="bi bi-cake-fill"></i></div>
+                <div class="celebration-icon" style="animation-delay: 0.6s;"><i class="bi bi-stars"></i></div>
             </div>
-            <div class="row">
+        </div>
+
+        <div class="row">
+            <!-- Message card with animation -->
+            <div class="col-lg-4 d-grid mb-4">
+                <div class="message-card animate__animated animate__fadeInLeft">
+                    <div class="text-center mb-3">
+                        <i class="bi bi-heart-fill text-danger" style="font-size: 2rem;"></i>
+                        <h3>親愛的欣妤</h3>
+                    </div>
+                    <p class="lead">
+                        今天是你的生日，記得去年我生日時，你是第一個傳訊息給我的，那時候的我面臨著課業和升學的壓力，
+                        你的一句生日快樂，帶給生活在迷惘生活和壓力中的我溫暖，那時候就認定你是我生命中特別的人，今天是你生日
+                        代表你又長大了一歲，過去幾個月我們都很忙，但久了好像也成為了日常，未來的日子，你轉到電機系，我也
+                        成為研究生，生活可能也會如同之前一樣充實，但沒關係，我們還是能偶爾出來走走，雖然我一直要你不要哭哭
+                        但難過的時候可以來找我沒關係我都會收留你的，這些文字是在半夜完成的，想必你現在正在抱著我的衣服熟睡吧
+                        ，我只想跟你說我愛你，就如同你愛我一樣，雖然未來的挑戰還很多，但也不需要去想那麼多了，勇敢面對，我相信
+                        都能有最好的安排的~
+                    </p>
+                    <p class="fw-bold text-center animate__animated animate__pulse animate__infinite">
+                        生日快樂~ <i class="bi bi-heart-fill text-danger"></i>
+                    </p>
+                    <blockquote class="blockquote text-end">
+                        <footer class="blockquote-footer">陳冠軒 2022/3/7 1:32am</footer>
+                    </blockquote>
+                </div>
+
+                <!-- Countdown section -->
+                <div class="countdown animate__animated animate__fadeIn" style="animation-delay: 1s;">
+                    <h4>Our Anniversary</h4>
+                    <div class="row" id="countdown">
+                        <div class="col-3">
+                            <div class="countdown-number" id="days">00</div>
+                            <div class="countdown-label">Days</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="countdown-number" id="hours">00</div>
+                            <div class="countdown-label">Hours</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="countdown-number" id="minutes">00</div>
+                            <div class="countdown-label">Minutes</div>
+                        </div>
+                        <div class="col-3">
+                            <div class="countdown-number" id="seconds">00</div>
+                            <div class="countdown-label">Seconds</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Main image with animation -->
+            <div class="col-lg-4 d-flex align-items-center justify-content-center mb-4">
+                <img src="./pic/together.jpg" class="img-thumbnail shadow-lg animate__animated animate__zoomIn" alt="Together">
+            </div>
+
+            <!-- Photo memories -->
+            <div class="col-lg-4 d-grid photo-memories">
+                <div class="row g-2 mb-2 animate__animated animate__fadeInRight" style="animation-delay: 0.3s;">
+                    <div class="col-6">
+                        <img src="./pic/uspic/LINE_ALBUM_紀錄一下偶們ㄉ生活_220308_1.jpg" class="img-fluid img-thumbnail shadow-sm" alt="">
+                    </div>
+                    <div class="col-6">
+                        <img src="./pic/uspic/LINE_ALBUM_紀錄一下偶們ㄉ生活_220309_27.jpg" class="img-fluid img-thumbnail shadow-sm" alt="">
+                    </div>
+                </div>
+                <div class="row g-2 animate__animated animate__fadeInRight" style="animation-delay: 0.6s;">
+                    <div class="col-6">
+                        <img src="./pic/uspic/Mika.jpg" class="img-fluid img-thumbnail shadow-sm" alt="">
+                    </div>
+                    <div class="col-6">
+                        <img src="./pic/uspic/LINE_ALBUM_紀錄一下偶們ㄉ生活_220309_3.jpg" class="img-fluid img-thumbnail shadow-sm" alt="">
+                    </div>
+                </div>
+                
             </div>
         </div>
     </div>
+
+    <footer class="footer">
+        <div class="container">
+            <p>Made with <i class="bi bi-heart-fill text-danger animate__animated animate__heartBeat animate__infinite"></i> for Xinyu</p>
+            <p class="mb-0">&copy; 2023 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
     
-    
+    <script>
+        // Countdown timer
+        $(document).ready(function() {
+            // Set the date to count down to (example: Dec 31, 2023)
+            const anniversaryDate = new Date("Dec 31, 2023").getTime();
+            
+            // Update the countdown every 1 second
+            const countdownTimer = setInterval(function() {
+                // Get today's date and time
+                const now = new Date().getTime();
+                
+                // Find the distance between now and the anniversary date
+                const distance = anniversaryDate - now;
+                
+                // Time calculations for days, hours, minutes and seconds
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+                
+                // Display the result
+                document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+                document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+                
+                // If the countdown is finished, show message
+                if (distance < 0) {
+                    clearInterval(countdownTimer);
+                    document.getElementById("countdown").innerHTML = "<h4>Happy Anniversary!</h4>";
+                }
+            }, 1000);
+            
+            // Add animation on scroll
+            $(window).scroll(function() {
+                $('.animate__animated:not(.animate__animated--triggered)').each(function() {
+                    var bottom_of_object = $(this).offset().top + 100;
+                    var bottom_of_window = $(window).scrollTop() + $(window).height();
+                    
+                    if (bottom_of_window > bottom_of_object) {
+                        $(this).addClass('animate__animated--triggered');
+                    }
+                });
+            });
+        });
+    </script>
 </body>
-<style>
-body{
-    background-image: url('./pic/iso-republic-abstract-wallpaper-soft-blur.jpg');
-}
-</style>
-<script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 </html>

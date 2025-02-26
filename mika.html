@@ -1,51 +1,564 @@
 <!DOCTYPE html>
+<html lang="zh">
 <head>
-    <title></title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>棕熊捕魚</title>
     <style>
-        .a{
-            position: relative;
-            width: 550px;
-            height: 700px;
+        body {
+            margin: 0;
+            overflow: hidden;
+            background-color: #87CEEB;
+            font-family: Arial, sans-serif;
         }
-        .b{
+
+        .scene {
             position: relative;
-            width: 100px;
+            width: 100vw;
+            height: 100vh;
+            background: linear-gradient(to bottom, 
+                #87CEEB 0%, #87CEEB 60%, 
+                #1E90FF 60%, #1E90FF 70%, 
+                #228B22 70%, #228B22 100%);
+        }
+
+        .water {
+            position: absolute;
+            bottom: 30%;
+            width: 100%;
+            height: 10%;
+            background: repeating-linear-gradient(
+                45deg,
+                rgba(30, 144, 255, 0.7),
+                rgba(30, 144, 255, 0.7) 10px,
+                rgba(65, 105, 225, 0.7) 10px,
+                rgba(65, 105, 225, 0.7) 20px
+            );
+            animation: waterFlow 2s linear infinite;
+        }
+
+        @keyframes waterFlow {
+            0% { background-position: 0 0; }
+            100% { background-position: 40px 0; }
+        }
+
+        .bear {
+            position: absolute;
+            width: 200px;
+            height: 250px;
+            bottom: 20%;
+            left: 10%;
+            z-index: 2;
+            transition: left 0.2s ease-out;
+        }
+
+        .bear-body {
+            position: absolute;
+            width: 150px;
+            height: 180px;
+            bottom: 0;
+            left: 25px;
+            background-color: #8B4513;
+            border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+        }
+
+        /* Bear arms */
+        .bear-arm-left, .bear-arm-right {
+            position: absolute;
+            width: 30px;
             height: 100px;
+            background-color: #8B4513;
+            border-radius: 15px;
         }
-        .c{
-            position: relative;
-            width: 550px;
-            height: 700px;
+
+        .bear-arm-left {
+            transform: rotate(20deg);
+            transform-origin: top center;
+            top: 50px;
+            left: 10px;
         }
-        .d{
-            position:absolute;
-            left: 600px;
+
+        .bear-arm-right {
+            transform: rotate(-20deg);
+            transform-origin: top center;
+            top: 50px;
+            right: 10px;
         }
-        h2{
-            color:floralwhite;
-            background-color:pink;
-            border-radius: 100px;
-            width:450px;
-            padding: 30px;
-            opacity: 0.8;
-            
+
+        /* Bear legs */
+        .bear-leg-left, .bear-leg-right {
+            position: absolute;
+            width: 35px;
+            height: 70px;
+            background-color: #8B4513;
+            border-radius: 15px;
+            bottom: -40px;
         }
-        body{
-            background-color: pink;
-            background-size:cover;
+
+        .bear-leg-left {
+            left: 40px;
+        }
+
+        .bear-leg-right {
+            right: 40px;
+        }
+
+        /* Bear's paw */
+        .bear-paw-left, .bear-paw-right {
+            position: absolute;
+            width: 40px;
+            height: 25px;
+            background-color: #6B3E0B;
+            border-radius: 50%;
+            bottom: -60px;
+        }
+
+        .bear-paw-left {
+            left: 35px;
+        }
+
+        .bear-paw-right {
+            right: 35px;
+        }
+
+        .bear-head {
+            position: absolute;
+            width: 120px;
+            height: 100px;
+            bottom: 150px;
+            left: 40px;
+            background-color: #8B4513;
+            border-radius: 50%;
+        }
+
+        .bear-ear-left, .bear-ear-right {
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background-color: #8B4513;
+            border-radius: 50%;
+        }
+
+        .bear-ear-left {
+            top: -10px;
+            left: 20px;
+        }
+
+        .bear-ear-right {
+            top: -10px;
+            right: 20px;
+        }
+
+        .bear-eye-left, .bear-eye-right {
+            position: absolute;
+            width: 15px;
+            height: 15px;
+            background-color: black;
+            border-radius: 50%;
+            top: 30px;
+        }
+
+        .bear-eye-left {
+            left: 30px;
+        }
+
+        .bear-eye-right {
+            right: 30px;
+        }
+
+        .bear-nose {
+            position: absolute;
+            width: 25px;
+            height: 15px;
+            background-color: #5D4037;
+            border-radius: 50%;
+            top: 45px;
+            left: 47px;
+        }
+
+        .bear-mouth {
+            position: absolute;
+            width: 40px;
+            height: 10px;
+            top: 65px;
+            left: 40px;
+            background-color: #5D4037;
+            border-radius: 0 0 50% 50%;
+            transition: height 0.2s;
+        }
+
+        .bear.catching .bear-mouth {
+            height: 25px;
+        }
+
+        .bear.catching .bear-arm-left {
+            transform: rotate(60deg);
+            height: 110px;
+        }
+
+        .bear.catching .bear-arm-right {
+            transform: rotate(-60deg);
+            height: 110px;
+        }
+
+        .fish {
+            position: absolute;
+            width: 60px;
+            height: 30px;
+            background-color: #FA8072;
+            border-radius: 50% 20% 20% 50%;
+            transform-origin: center;
+            z-index: 1;
+        }
+
+        .fish::before {
+            content: "";
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #FA8072;
+            right: -15px;
+            top: 5px;
+            clip-path: polygon(0 0, 0% 100%, 100% 50%);
+        }
+
+        .fish::after {
+            content: "";
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background-color: black;
+            border-radius: 50%;
+            left: 10px;
+            top: 10px;
+        }
+
+        .splash {
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: radial-gradient(circle, rgba(255,255,255,0.8) 0%, rgba(255,255,255,0) 70%);
+            border-radius: 50%;
+            transform: scale(0);
+            opacity: 0;
+            animation: splash 0.5s forwards;
+        }
+
+        @keyframes splash {
+            0% { transform: scale(0); opacity: 0.8; }
+            100% { transform: scale(1.5); opacity: 0; }
+        }
+
+        .score {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            font-size: 24px;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .timer {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 24px;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+        }
+        
+        .home-button {
+            position: absolute;
+            top: 70px;
+            left: 20px;
+            padding: 10px 15px;
+            background-color: #228B22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 18px;
+            z-index: 10;
+        }
+        
+        .home-button:hover {
+            background-color: #196619;
+        }
+        
+        .game-controls {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            text-align: center;
+            color: white;
+            background-color: rgba(0,0,0,0.5);
+            padding: 10px;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+        
+        .game-over {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.7);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 100;
+            display: none;
+        }
+        
+        .game-over h1 {
+            color: white;
+            font-size: 48px;
+            margin-bottom: 20px;
+        }
+        
+        .game-over .final-score {
+            color: white;
+            font-size: 32px;
+            margin-bottom: 30px;
+        }
+        
+        .game-over button {
+            padding: 15px 30px;
+            font-size: 24px;
+            background-color: #228B22;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 10px;
+        }
+        
+        .game-over button:hover {
+            background-color: #196619;
         }
     </style>
 </head>
 <body>
-    <h2>MIKA happy birthday!</h2>
-    <img src="./Mika.jpg" class="a">
-    <img src="./salmon.png" class="b">
-    <img src="./salmon.png" class="b">
-    <img src="./salmon.png" class="b">
-    <img src="./salmon.png" class="b">
-    <img src="./salmon.png" class="b">
-    <img src="./salmon.png" class="b">
-    
-    <img src="./happy-birthday.png" class="d">
+    <div class="scene">
+        <div class="water"></div>
+        <div class="bear">
+            <div class="bear-body"></div>
+            <div class="bear-arm-left"></div>
+            <div class="bear-arm-right"></div>
+            <div class="bear-leg-left"></div>
+            <div class="bear-leg-right"></div>
+            <div class="bear-paw-left"></div>
+            <div class="bear-paw-right"></div>
+            <div class="bear-head">
+                <div class="bear-ear-left"></div>
+                <div class="bear-ear-right"></div>
+                <div class="bear-eye-left"></div>
+                <div class="bear-eye-right"></div>
+                <div class="bear-nose"></div>
+                <div class="bear-mouth"></div>
+            </div>
+        </div>
+        <div class="score">捕獲: 0</div>
+        <div class="timer">時間: 60</div>
+        <button class="home-button" onclick="goToHomePage()">返回主頁</button>
+        <div class="game-controls">使用 ← → 鍵移動棕熊</div>
+        
+        <div class="game-over">
+            <h1>遊戲結束!</h1>
+            <div class="final-score">你捕獲了 0 條鮭魚!</div>
+            <div>
+                <button onclick="restartGame()">再玩一次</button>
+                <button onclick="goToHomePage()">返回主頁</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const bear = document.querySelector('.bear');
+            const scene = document.querySelector('.scene');
+            const scoreDisplay = document.querySelector('.score');
+            const timerDisplay = document.querySelector('.timer');
+            const gameOverScreen = document.querySelector('.game-over');
+            const finalScoreDisplay = document.querySelector('.final-score');
+            
+            let score = 0;
+            let timeRemaining = 60;
+            let gameActive = true;
+            let fishInterval;
+            let timerInterval;
+            
+            // Create splash effect
+            function createSplash(x, y) {
+                const splash = document.createElement('div');
+                splash.className = 'splash';
+                splash.style.left = (x - 40) + 'px';
+                splash.style.top = (y - 40) + 'px';
+                scene.appendChild(splash);
+                
+                setTimeout(() => {
+                    scene.removeChild(splash);
+                }, 500);
+            }
+            
+            // Create and animate fish
+            function createFish() {
+                if (!gameActive) return;
+                
+                const fish = document.createElement('div');
+                fish.className = 'fish';
+                
+                // Random position in water
+                const waterTop = scene.clientHeight * 0.6;
+                const waterBottom = scene.clientHeight * 0.7;
+                const fishY = waterTop + Math.random() * (waterBottom - waterTop - 30);
+                
+                fish.style.top = fishY + 'px';
+                fish.style.right = '-60px';
+                scene.appendChild(fish);
+                
+                // Animation variables
+                let position = -60;
+                const speed = 2 + Math.random() * 3;
+                let wiggle = 0;
+                
+                function swimFish() {
+                    if (!gameActive) {
+                        scene.removeChild(fish);
+                        return;
+                    }
+                    
+                    if (position > window.innerWidth) {
+                        scene.removeChild(fish);
+                        return;
+                    }
+                    
+                    position += speed;
+                    wiggle += 0.1;
+                    const wiggleY = Math.sin(wiggle) * 5;
+                    
+                    fish.style.right = position + 'px';
+                    fish.style.top = (fishY + wiggleY) + 'px';
+                    
+                    // Check if fish is near bear
+                    const bearRect = bear.getBoundingClientRect();
+                    const fishRect = fish.getBoundingClientRect();
+                    
+                    if (fishRect.right > bearRect.left && 
+                        fishRect.left < bearRect.right && 
+                        fishRect.top > bearRect.top &&
+                        fishRect.bottom < bearRect.bottom + 100) {
+                        
+                        // Bear catches the fish
+                        scene.removeChild(fish);
+                        bear.classList.add('catching');
+                        
+                        // Create splash effect
+                        createSplash(fishRect.left, fishRect.top);
+                        
+                        // Update score
+                        score++;
+                        scoreDisplay.textContent = `捕獲: ${score}`;
+                        
+                        setTimeout(() => {
+                            bear.classList.remove('catching');
+                        }, 300);
+                        
+                        return;
+                    }
+                    
+                    requestAnimationFrame(swimFish);
+                }
+                
+                swimFish();
+            }
+            
+            // Start game timer
+            function startTimer() {
+                timerInterval = setInterval(() => {
+                    timeRemaining--;
+                    timerDisplay.textContent = `時間: ${timeRemaining}`;
+                    
+                    if (timeRemaining <= 0) {
+                        endGame();
+                    }
+                }, 1000);
+            }
+            
+            // End the game
+            function endGame() {
+                gameActive = false;
+                clearInterval(fishInterval);
+                clearInterval(timerInterval);
+                
+                finalScoreDisplay.textContent = `你捕獲了 ${score} 條鮭魚!`;
+                gameOverScreen.style.display = 'flex';
+            }
+            
+            // Keyboard controls for the bear
+            document.addEventListener('keydown', (e) => {
+                if (!gameActive) return;
+                
+                const bearRect = bear.getBoundingClientRect();
+                const sceneRect = scene.getBoundingClientRect();
+                const bearWidth = bearRect.width;
+                
+                // Move bear left
+                if (e.key === 'ArrowLeft') {
+                    const newPosition = Math.max(0, bearRect.left - sceneRect.left - 20);
+                    bear.style.left = newPosition + 'px';
+                }
+                
+                // Move bear right
+                if (e.key === 'ArrowRight') {
+                    const newPosition = Math.min(
+                        sceneRect.width - bearWidth, 
+                        bearRect.left - sceneRect.left + 20
+                    );
+                    bear.style.left = newPosition + 'px';
+                }
+            });
+            
+            // Initialize the game
+            function initGame() {
+                score = 0;
+                timeRemaining = 60;
+                gameActive = true;
+                
+                scoreDisplay.textContent = `捕獲: ${score}`;
+                timerDisplay.textContent = `時間: ${timeRemaining}`;
+                gameOverScreen.style.display = 'none';
+                
+                // Create fish at random intervals
+                fishInterval = setInterval(createFish, 1500 + Math.random() * 1000);
+                
+                // Start timer
+                startTimer();
+                
+                // Initial fish
+                createFish();
+            }
+            
+            // Restart the game
+            window.restartGame = function() {
+                initGame();
+            };
+            
+            // Go to home page
+            window.goToHomePage = function() {
+                window.location.href = 'index.html';
+            };
+            
+            // Initialize the game when page loads
+            initGame();
+        });
+    </script>
 </body>
 </html>
