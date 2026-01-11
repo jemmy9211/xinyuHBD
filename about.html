@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pictures - Xinyu</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='16'>❤️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --pink-50: #fdf2f5;
+            --pink-100: #fce4eb;
+            --pink-200: #f9c5d5;
+            --pink-300: #f4a3bb;
+            --pink-400: #ec7a9e;
+            --pink-500: #de5080;
+            --text-primary: #3d3539;
+            --text-secondary: #7a6f74;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--pink-50);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        /* Minimal Navbar */
+        .navbar {
+            background-color: var(--white);
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--pink-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--pink-400);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-link:hover,
+        .nav-link.active {
+            color: var(--pink-400);
+        }
+
+        .nav-link i {
+            margin-right: 0.4rem;
+        }
+
+        /* Page Header */
+        .page-header {
+            text-align: center;
+            padding: 60px 24px 40px;
+        }
+
+        .page-header h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.5rem;
+            font-weight: 400;
+            color: var(--pink-400);
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .page-header p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+        }
+
+        /* Photo Gallery */
+        .gallery-container {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 20px 24px 80px;
+        }
+
+        .gallery-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .photo-stack {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 420px;
+            position: relative;
+            perspective: 1200px;
+            width: 100%;
+        }
+
+        .photo-card {
+            position: absolute;
+            width: 260px;
+            height: 360px;
+            background: var(--white);
+            border: 1px solid var(--pink-100);
+            border-radius: 12px;
+            overflow: hidden;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        border-color 0.4s ease,
+                        opacity 0.5s ease,
+                        filter 0.4s ease;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(236, 122, 158, 0.1);
+            will-change: transform;
+        }
+
+        /* 非活躍的照片 - 縮小並在後面 */
+        .photo-card {
+            transform: scale(0.75) translateY(30px);
+            opacity: 0.4;
+            filter: blur(2px) grayscale(0.3);
+            z-index: 1;
+        }
+
+        /* 活躍的照片 - 浮到前面 */
+        .photo-card.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            filter: blur(0) grayscale(0);
+            z-index: 10;
+            box-shadow: 0 20px 50px rgba(236, 122, 158, 0.2),
+                        0 8px 20px rgba(236, 122, 158, 0.12);
+        }
+
+        .photo-card.active:hover {
+            transform: scale(1.03) translateY(-10px);
+            box-shadow: 0 25px 60px rgba(236, 122, 158, 0.25),
+                        0 12px 25px rgba(236, 122, 158, 0.15);
+            border-color: var(--pink-300);
+        }
+
+        .photo-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .photo-card.active:hover img {
+            transform: scale(1.05);
+        }
+
+        .photo-card .photo-caption {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(255, 255, 255, 0.98), rgba(255, 255, 255, 0.9));
+            color: var(--text-primary);
+            padding: 14px 12px;
+            text-align: center;
+            font-size: 0.85rem;
+            font-weight: 400;
+            transform: translateY(0);
+            border-top: 1px solid var(--pink-100);
+            opacity: 0;
+            transition: opacity 0.4s ease;
+        }
+
+        .photo-card.active .photo-caption {
+            opacity: 1;
+        }
+
+        .photo-caption i {
+            color: var(--pink-400);
+            margin-right: 6px;
+            transition: transform 0.3s ease;
+        }
+
+        /* Navigation Dots */
+        .photo-nav {
+            display: flex;
+            gap: 10px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+            max-width: 300px;
+        }
+
+        .photo-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--pink-200);
+            border: 2px solid var(--pink-200);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .photo-dot:hover {
+            background-color: var(--pink-300);
+            border-color: var(--pink-300);
+            transform: scale(1.2);
+        }
+
+        .photo-dot.active {
+            background-color: var(--pink-400);
+            border-color: var(--pink-400);
+            transform: scale(1.3);
+        }
+
+        /* Arrow Navigation */
+        .gallery-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--white);
+            border: 1px solid var(--pink-200);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            color: var(--text-secondary);
+            font-size: 1.2rem;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 15px rgba(236, 122, 158, 0.1);
+            z-index: 20;
+        }
+
+        .gallery-arrows:hover {
+            background: var(--pink-100);
+            border-color: var(--pink-300);
+            color: var(--pink-400);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 6px 20px rgba(236, 122, 158, 0.15);
+        }
+
+        .gallery-prev {
+            left: 10%;
+        }
+
+        .gallery-next {
+            right: 10%;
+        }
+
+        .gallery-prev:hover {
+            transform: translateY(-50%) scale(1.1) translateX(-3px);
+        }
+
+        .gallery-next:hover {
+            transform: translateY(-50%) scale(1.1) translateX(3px);
+        }
+
+        @keyframes heartBeat {
+            0%, 100% { transform: scale(1); }
+            25% { transform: scale(1.2); }
+            50% { transform: scale(1); }
+            75% { transform: scale(1.15); }
+        }
+
+        /* Image Modal */
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(253, 242, 245, 0.98);
+            opacity: 0;
+            transition: opacity 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            backdrop-filter: blur(10px);
+        }
+
+        .image-modal.show {
+            opacity: 1;
+        }
+
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0.9);
+            max-width: 85%;
+            max-height: 80vh;
+            object-fit: contain;
+            border-radius: 12px;
+            border: 1px solid var(--pink-100);
+            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.4s ease;
+            box-shadow: 0 20px 60px rgba(236, 122, 158, 0.2);
+        }
+
+        .image-modal.show .modal-content {
+            transform: translate(-50%, -50%) scale(1);
+        }
+
+        .close {
+            position: absolute;
+            top: 24px;
+            right: 32px;
+            color: var(--text-secondary);
+            font-size: 28px;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: var(--white);
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--pink-100);
+            box-shadow: 0 4px 15px rgba(236, 122, 158, 0.1);
+        }
+
+        .close:hover {
+            color: var(--pink-400);
+            border-color: var(--pink-300);
+            transform: rotate(90deg) scale(1.1);
+            box-shadow: 0 6px 20px rgba(236, 122, 158, 0.15);
+        }
+
+        .nav-arrows {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            background: var(--white);
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid var(--pink-100);
+            box-shadow: 0 4px 15px rgba(236, 122, 158, 0.1);
+        }
+
+        .nav-arrows:hover {
+            color: var(--pink-400);
+            border-color: var(--pink-300);
+            transform: translateY(-50%) scale(1.1);
+            box-shadow: 0 8px 25px rgba(236, 122, 158, 0.2);
+        }
+
+        .prev:hover {
+            transform: translateY(-50%) scale(1.1) translateX(-3px);
+        }
+
+        .next:hover {
+            transform: translateY(-50%) scale(1.1) translateX(3px);
+        }
+
+        .prev { left: 24px; }
+        .next { right: 24px; }
+
+        .caption-container {
+            position: absolute;
+            bottom: 32px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--white);
+            padding: 12px 24px;
+            border-radius: 4px;
+            border: 1px solid var(--pink-100);
+            color: var(--text-primary);
+            font-size: 0.9rem;
+        }
+
+        .loader {
+            border: 2px solid var(--pink-100);
+            border-radius: 50%;
+            border-top: 2px solid var(--pink-400);
+            width: 32px;
+            height: 32px;
+            animation: spin 0.8s linear infinite;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin: -16px 0 0 -16px;
+            display: none;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Footer */
+        .footer {
+            background-color: var(--white);
+            padding: 32px 24px;
+            text-align: center;
+            border-top: 1px solid var(--pink-100);
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        .footer i {
+            color: var(--pink-300);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .navbar-nav {
+                gap: 1rem;
+            }
+
+            .nav-link span {
+                display: none;
+            }
+
+            .page-header h1 {
+                font-size: 1.8rem;
+            }
+
+            .photo-card {
+                width: 200px;
+                height: 280px;
+                border-radius: 8px;
+            }
+
+            .photo-stack {
+                min-height: 360px;
+            }
+
+            .photo-card.active:hover {
+                transform: scale(1.02) translateY(-8px);
+            }
+
+            .photo-card .photo-caption {
+                padding: 10px 8px;
+                font-size: 0.75rem;
+            }
+
+            .gallery-arrows {
+                width: 36px;
+                height: 36px;
+                font-size: 1rem;
+            }
+
+            .gallery-prev {
+                left: 5%;
+            }
+
+            .gallery-next {
+                right: 5%;
+            }
+
+            .photo-nav {
+                margin-top: 24px;
+            }
+
+            .photo-dot {
+                width: 10px;
+                height: 10px;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <!-- Minimal Navbar -->
+    <nav class="navbar">
+        <a class="navbar-brand" href="./index.html">Xinyu</a>
+        <ul class="navbar-nav">
+            <li>
+                <a class="nav-link" href="./index.html">
+                    <i class="bi bi-house"></i> <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link active" href="./about.html">
+                    <i class="bi bi-image"></i> <span>Pictures</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="./mika.html">
+                    <i class="bi bi-heart"></i> <span>Mika</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="page-header animate-in">
+        <h1>Our Moments Together</h1>
+        <p>A collection of special memories</p>
+    </div>
+
+    <div class="gallery-container">
+        <div class="gallery-wrapper">
+            <div class="photo-stack" id="photoStack">
+                <!-- Photos will be added here dynamically -->
+                <div class="gallery-arrows gallery-prev" id="galleryPrev">
+                    <i class="bi bi-chevron-left"></i>
+                </div>
+                <div class="gallery-arrows gallery-next" id="galleryNext">
+                    <i class="bi bi-chevron-right"></i>
+                </div>
+            </div>
+            <div class="photo-nav" id="photoNav">
+                <!-- Navigation dots will be added here dynamically -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Image Modal -->
+    <div id="imageModal" class="image-modal">
+        <span class="close"><i class="bi bi-x"></i></span>
+        <div class="nav-arrows prev"><i class="bi bi-chevron-left"></i></div>
+        <div class="nav-arrows next"><i class="bi bi-chevron-right"></i></div>
+        <div class="loader" id="imageLoader"></div>
+        <img class="modal-content" id="modalImage">
+        <div class="caption-container" id="caption"></div>
+    </div>
+
+    <footer class="footer">
+        <p>Made with <i class="bi bi-heart-fill"></i> for Xinyu</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const photoData = [
+                { src: './pic/together.jpg', caption: '以前' },
+                { src: './pic/Mika.jpg', caption: 'Mika' },
+                { src: './assets/1.jpg', caption: '馬拉松' },
+                { src: './assets/2.jpg', caption: '短裙妹子' },
+                { src: './assets/3.jpg', caption: '爬山' },
+                { src: './assets/4.jpg', caption: '海邊' },
+                { src: './assets/5.jpg', caption: '你' }
+            ];
+            
+            const photoStack = document.getElementById('photoStack');
+            const photoNav = document.getElementById('photoNav');
+            let currentPhotoIndex = 0;
+            
+            // Create photo cards and navigation dots
+            photoData.forEach((photo, index) => {
+                // Create card
+                const card = document.createElement('div');
+                card.className = 'photo-card' + (index === 0 ? ' active' : '');
+                card.setAttribute('data-index', index);
+                
+                const img = document.createElement('img');
+                img.src = photo.src;
+                img.alt = photo.caption;
+                img.className = 'gallery-img';
+                img.loading = 'lazy';
+                
+                const caption = document.createElement('div');
+                caption.className = 'photo-caption';
+                caption.innerHTML = `<i class="bi bi-heart"></i> ${photo.caption}`;
+                
+                card.appendChild(img);
+                card.appendChild(caption);
+                photoStack.insertBefore(card, photoStack.querySelector('.gallery-arrows'));
+                
+                // Create navigation dot
+                const dot = document.createElement('div');
+                dot.className = 'photo-dot' + (index === 0 ? ' active' : '');
+                dot.setAttribute('data-index', index);
+                photoNav.appendChild(dot);
+                
+                // Add click event to card
+                card.addEventListener('click', function() {
+                    if (this.classList.contains('active')) {
+                        showImage(index);
+                    } else {
+                        switchToPhoto(index);
+                    }
+                });
+                
+                // Add click event to dot
+                dot.addEventListener('click', function() {
+                    switchToPhoto(index);
+                });
+            });
+            
+            // Arrow navigation
+            document.getElementById('galleryPrev').addEventListener('click', function() {
+                const newIndex = (currentPhotoIndex - 1 + photoData.length) % photoData.length;
+                switchToPhoto(newIndex);
+            });
+            
+            document.getElementById('galleryNext').addEventListener('click', function() {
+                const newIndex = (currentPhotoIndex + 1) % photoData.length;
+                switchToPhoto(newIndex);
+            });
+            
+            function switchToPhoto(index) {
+                currentPhotoIndex = index;
+                
+                // Update cards
+                document.querySelectorAll('.photo-card').forEach((card, i) => {
+                    card.classList.remove('active');
+                    if (i === index) {
+                        card.classList.add('active');
+                    }
+                });
+                
+                // Update dots
+                document.querySelectorAll('.photo-dot').forEach((dot, i) => {
+                    dot.classList.remove('active');
+                    if (i === index) {
+                        dot.classList.add('active');
+                    }
+                });
+            }
+            
+            // Image modal functionality
+            const modal = document.getElementById("imageModal");
+            const modalImg = document.getElementById("modalImage");
+            const closeBtn = document.querySelector(".close");
+            const prevBtn = document.querySelector(".prev");
+            const nextBtn = document.querySelector(".next");
+            const captionText = document.getElementById("caption");
+            const loader = document.getElementById("imageLoader");
+            
+            let modalIndex = 0;
+            
+            function showImage(index) {
+                modalIndex = index;
+                loader.style.display = "block";
+                modalImg.style.opacity = 0;
+                modalImg.src = photoData[index].src;
+                captionText.textContent = photoData[index].caption;
+                modal.style.display = "block";
+                
+                setTimeout(() => {
+                    modal.classList.add("show");
+                }, 10);
+                
+                modalImg.onload = function() {
+                    loader.style.display = "none";
+                    modalImg.style.opacity = 1;
+                }
+            }
+            
+            prevBtn.onclick = function(e) {
+                e.stopPropagation();
+                modalIndex = (modalIndex - 1 + photoData.length) % photoData.length;
+                showImage(modalIndex);
+            }
+            
+            nextBtn.onclick = function(e) {
+                e.stopPropagation();
+                modalIndex = (modalIndex + 1) % photoData.length;
+                showImage(modalIndex);
+            }
+            
+            function closeModal() {
+                modal.classList.remove("show");
+                setTimeout(() => {
+                    modal.style.display = "none";
+                    // Sync gallery to current modal image
+                    switchToPhoto(modalIndex);
+                }, 300);
+            }
+            
+            closeBtn.onclick = closeModal;
+            
+            modal.onclick = function(event) {
+                if (event.target === modal) {
+                    closeModal();
+                }
+            }
+            
+            // Keyboard navigation
+            document.addEventListener('keydown', function(e) {
+                if (modal.style.display === "block") {
+                    if (e.key === "ArrowLeft") {
+                        modalIndex = (modalIndex - 1 + photoData.length) % photoData.length;
+                        showImage(modalIndex);
+                    }
+                    else if (e.key === "ArrowRight") {
+                        modalIndex = (modalIndex + 1) % photoData.length;
+                        showImage(modalIndex);
+                    }
+                    else if (e.key === "Escape") {
+                        closeModal();
+                    }
+                } else {
+                    // Gallery keyboard navigation
+                    if (e.key === "ArrowLeft") {
+                        const newIndex = (currentPhotoIndex - 1 + photoData.length) % photoData.length;
+                        switchToPhoto(newIndex);
+                    }
+                    else if (e.key === "ArrowRight") {
+                        const newIndex = (currentPhotoIndex + 1) % photoData.length;
+                        switchToPhoto(newIndex);
+                    }
+                }
+            });
+            
+            // Touch swipe support
+            let touchStartX = 0;
+            let touchEndX = 0;
+            
+            modal.addEventListener('touchstart', function(e) {
+                touchStartX = e.changedTouches[0].screenX;
+            });
+            
+            modal.addEventListener('touchend', function(e) {
+                touchEndX = e.changedTouches[0].screenX;
+                handleSwipe();
+            });
+            
+            function handleSwipe() {
+                if (touchEndX < touchStartX - 50) {
+                    modalIndex = (modalIndex + 1) % photoData.length;
+                    showImage(modalIndex);
+                }
+                if (touchEndX > touchStartX + 50) {
+                    modalIndex = (modalIndex - 1 + photoData.length) % photoData.length;
+                    showImage(modalIndex);
+                }
+            }
+        });
+    </script>
+</body>
+</html>

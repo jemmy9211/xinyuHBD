@@ -1,0 +1,890 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>xinyu</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><text y='16'>❤️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600&family=Quicksand:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+    <style>
+        :root {
+            --pink-50: #fdf2f5;
+            --pink-100: #fce4eb;
+            --pink-200: #f9c5d5;
+            --pink-300: #f4a3bb;
+            --pink-400: #ec7a9e;
+            --pink-500: #de5080;
+            --text-primary: #3d3539;
+            --text-secondary: #7a6f74;
+            --white: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: var(--pink-50);
+            font-family: 'Quicksand', sans-serif;
+            color: var(--text-primary);
+            min-height: 100vh;
+            line-height: 1.7;
+        }
+
+        .navbar {
+            background-color: var(--white);
+            padding: 1.25rem 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid var(--pink-100);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .navbar-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            color: var(--pink-400);
+            text-decoration: none;
+            letter-spacing: 0.5px;
+        }
+
+        .navbar-nav {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 400;
+            transition: color 0.3s ease;
+            letter-spacing: 0.3px;
+        }
+
+        .nav-link:hover {
+            color: var(--pink-400);
+        }
+
+        .nav-link i {
+            margin-right: 0.4rem;
+        }
+
+        .content-section {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 80px 24px;
+        }
+
+        .birthday-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.8rem;
+            font-weight: 400;
+            color: var(--pink-400);
+            text-align: center;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1rem;
+            font-weight: 300;
+            margin-bottom: 60px;
+            letter-spacing: 0.5px;
+        }
+
+        .envelope-stack-container {
+            display: flex;
+            flex-direction: row;
+            align-items: flex-start;
+            gap: 60px;
+            margin: 0 auto;
+        }
+
+        .envelope-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex-shrink: 0;
+        }
+
+        .envelope-stack {
+            position: relative;
+            width: 320px;
+            height: 260px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .envelope-container {
+            position: absolute;
+            width: 280px;
+            cursor: pointer;
+            transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        opacity 0.5s ease,
+                        filter 0.4s ease;
+            will-change: transform;
+        }
+
+        .envelope-container {
+            transform: scale(0.85) translateY(20px);
+            opacity: 0.5;
+            filter: blur(2px);
+            z-index: 1;
+        }
+
+        .envelope-container.active {
+            transform: scale(1) translateY(0);
+            opacity: 1;
+            filter: blur(0);
+            z-index: 10;
+        }
+
+        .envelope-container.active:hover {
+            transform: scale(1.02) translateY(-8px);
+        }
+
+        .envelope {
+            width: 100%;
+            height: 200px;
+            background-color: var(--white);
+            border: 1px solid var(--pink-200);
+            border-radius: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: border-color 0.4s ease,
+                        box-shadow 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            box-shadow: 0 4px 15px rgba(242, 122, 154, 0.08);
+        }
+
+        .envelope-container.active .envelope {
+            box-shadow: 0 15px 40px rgba(242, 122, 154, 0.18),
+                        0 5px 15px rgba(242, 122, 154, 0.1);
+        }
+
+        .envelope-container.active:hover .envelope {
+            border-color: var(--pink-300);
+            box-shadow: 0 20px 50px rgba(242, 122, 154, 0.22),
+                        0 8px 20px rgba(242, 122, 154, 0.12);
+        }
+
+        .envelope-year {
+            position: absolute;
+            top: -12px;
+            left: 20px;
+            background-color: var(--pink-200);
+            color: var(--text-primary);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            transition: background-color 0.3s ease, transform 0.3s ease;
+        }
+
+        .envelope-container.active .envelope-year {
+            background-color: var(--pink-300);
+            color: var(--white);
+        }
+
+        .heart-seal {
+            font-size: 1.8rem;
+            color: var(--pink-300);
+            margin-bottom: 12px;
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.3s ease;
+        }
+
+        .envelope-container.active:hover .heart-seal {
+            transform: scale(1.15);
+            color: var(--pink-400);
+        }
+
+        .envelope h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 400;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .envelope p {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 300;
+        }
+
+        .envelope-nav {
+            display: flex;
+            gap: 12px;
+            margin-top: 24px;
+        }
+
+        .envelope-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--pink-200);
+            border: 2px solid var(--pink-200);
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .envelope-dot:hover {
+            background-color: var(--pink-300);
+            border-color: var(--pink-300);
+            transform: scale(1.2);
+        }
+
+        .envelope-dot.active {
+            background-color: var(--pink-400);
+            border-color: var(--pink-400);
+            transform: scale(1.3);
+        }
+
+        .envelope-dot::after {
+            content: attr(data-year);
+            position: absolute;
+            bottom: -24px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--text-secondary);
+            white-space: nowrap;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .envelope-dot:hover::after,
+        .envelope-dot.active::after {
+            opacity: 1;
+        }
+
+        .close-envelope {
+            position: absolute;
+            top: 12px;
+            right: 12px;
+            background: var(--pink-100);
+            color: var(--pink-400);
+            border: none;
+            border-radius: 50%;
+            width: 28px;
+            height: 28px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            transform: scale(0);
+        }
+
+        .close-envelope:hover {
+            background: var(--pink-200);
+        }
+
+        .envelope-opened .close-envelope {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .envelope-opened {
+            transform: translateX(-10%) scale(0.98) !important;
+            z-index: 20 !important;
+        }
+
+        .envelope-opened .envelope {
+            border-color: var(--pink-300);
+            box-shadow: 0 12px 35px rgba(242, 122, 154, 0.2),
+                        0 4px 12px rgba(242, 122, 154, 0.1);
+        }
+
+        .envelopes-hidden .envelope-container:not(.envelope-opened) {
+            opacity: 0.2;
+            pointer-events: none;
+            filter: blur(1px);
+            transition: opacity 0.5s ease, filter 0.5s ease, transform 0.5s ease;
+        }
+
+        .envelope-content {
+            flex: 1;
+            opacity: 0;
+            transform: translateY(20px) scale(0.98);
+            transition: opacity 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+                        transform 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: none;
+        }
+
+        .envelope-content.show {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+            display: block;
+        }
+
+        .message-card {
+            background-color: var(--white);
+            border: 1px solid var(--pink-100);
+            border-radius: 12px;
+            padding: 40px;
+            box-shadow: 0 8px 30px rgba(242, 122, 154, 0.08);
+            transition: box-shadow 0.4s ease;
+        }
+
+        .message-card:hover {
+            box-shadow: 0 12px 40px rgba(242, 122, 154, 0.12);
+        }
+
+        .message-card .card-header {
+            text-align: center;
+            margin-bottom: 24px;
+            padding-bottom: 24px;
+            border-bottom: 1px solid var(--pink-100);
+        }
+
+        .message-card .card-header i {
+            font-size: 1.2rem;
+            color: var(--pink-300);
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        .message-card .card-header h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 400;
+            color: var(--text-primary);
+        }
+
+        .message-card .lead {
+            font-size: 0.95rem;
+            color: var(--text-secondary);
+            line-height: 2;
+            margin-bottom: 24px;
+            font-weight: 300;
+        }
+
+        .message-card .signature {
+            text-align: right;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            font-style: italic;
+        }
+
+        .message-card .birthday-wish {
+            text-align: center;
+            color: var(--pink-400);
+            font-weight: 500;
+            margin: 20px 0;
+            font-size: 1rem;
+        }
+
+        .message-card .birthday-wish i {
+            color: var(--pink-300);
+        }
+
+        .password-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(253, 242, 244, 0.98);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .password-container {
+            background: var(--white);
+            padding: 48px 40px;
+            border-radius: 4px;
+            border: 1px solid var(--pink-100);
+            width: 90%;
+            max-width: 380px;
+            text-align: center;
+        }
+
+        .password-title {
+            font-family: 'Cormorant Garamond', serif;
+            color: var(--text-primary);
+            font-size: 1.5rem;
+            font-weight: 400;
+            margin-bottom: 8px;
+        }
+
+        .password-subtitle {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 32px;
+            font-weight: 300;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 14px 18px;
+            border: 1px solid var(--pink-200);
+            border-radius: 4px;
+            margin-bottom: 16px;
+            font-size: 1rem;
+            font-family: 'Quicksand', sans-serif;
+            text-align: center;
+            transition: all 0.3s ease;
+            background-color: var(--pink-50);
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: var(--pink-300);
+            background-color: var(--white);
+        }
+
+        .password-button {
+            width: 100%;
+            background-color: var(--pink-200);
+            color: var(--text-primary);
+            border: none;
+            padding: 14px 24px;
+            border-radius: 4px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.95rem;
+            letter-spacing: 0.3px;
+        }
+
+        .password-button:hover {
+            background-color: var(--pink-300);
+            color: var(--white);
+        }
+
+        .password-error {
+            color: var(--pink-500);
+            background-color: var(--pink-100);
+            padding: 10px 16px;
+            border-radius: 4px;
+            margin-top: 16px;
+            display: none;
+            font-size: 0.85rem;
+        }
+
+        .heart-icon {
+            font-size: 1.5rem;
+            color: var(--pink-300);
+            margin-bottom: 16px;
+            display: block;
+        }
+
+        .footer {
+            background-color: var(--white);
+            padding: 32px 24px;
+            text-align: center;
+            border-top: 1px solid var(--pink-100);
+            margin-top: 80px;
+        }
+
+        .footer p {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            font-weight: 300;
+        }
+
+        .footer i {
+            color: var(--pink-300);
+        }
+
+        .card-confetti {
+            position: fixed;
+            width: 6px;
+            height: 6px;
+            background-color: var(--pink-300);
+            position: absolute;
+            top: -10px;
+            border-radius: 50%;
+            z-index: 10;
+        }
+
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+
+            .navbar-nav {
+                gap: 1rem;
+            }
+
+            .nav-link span {
+                display: none;
+            }
+
+            .birthday-title {
+                font-size: 2rem;
+            }
+
+            .envelope-stack-container {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .envelope-wrapper {
+                width: 100%;
+            }
+
+            .envelope-stack {
+                width: 100%;
+                height: 240px;
+                display: flex;
+                justify-content: center;
+            }
+
+            .envelope-container {
+                width: 260px;
+            }
+
+            .envelope-content {
+                width: 100%;
+                padding: 0;
+                margin-top: 20px;
+            }
+
+            .message-card {
+                padding: 24px;
+            }
+
+            .envelope-nav {
+                margin-top: 20px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-in {
+            animation: fadeIn 0.6s ease forwards;
+        }
+    </style>
+</head>
+<body>
+    <div class="password-modal" id="passwordModal">
+        <div class="password-container">
+            <i class="bi bi-heart heart-icon"></i>
+            <h2 class="password-title">欣妤的專屬網頁</h2>
+            <p class="password-subtitle">請輸入密碼以繼續</p>
+            <form id="passwordForm">
+                <input type="password" id="passwordInput" class="password-input" placeholder="密碼" required>
+                <button type="submit" class="password-button">進入</button>
+                <div class="password-error" id="passwordError">
+                    密碼錯誤，請重試
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <nav class="navbar">
+        <a class="navbar-brand" href="./index.html">Xinyu</a>
+        <ul class="navbar-nav">
+            <li>
+                <a class="nav-link" href="./index.html">
+                    <i class="bi bi-house"></i> <span>Home</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="./about.html">
+                    <i class="bi bi-image"></i> <span>Pictures</span>
+                </a>
+            </li>
+            <li>
+                <a class="nav-link" href="./mika.html">
+                    <i class="bi bi-heart"></i> <span>Mika</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <div class="content-section">
+        <div class="animate-in">
+            <h1 class="birthday-title">Happy Birthday, Xinyu</h1>
+            <p class="subtitle">願你每一天都充滿溫暖與愛</p>
+        </div>
+        
+        <div class="envelope-stack-container" id="envelopeStackContainer">
+            <div class="envelope-wrapper">
+                <div class="envelope-stack" id="envelopeStack">
+                    <div class="envelope-container active" id="envelopeContainer2025" data-year="2025">
+                        <div class="envelope" id="envelope2025">
+                            <div class="envelope-year">2025</div>
+                            <i class="bi bi-heart heart-seal"></i>
+                            <h3>點擊打開信封</h3>
+                            <p>一份特別的生日驚喜</p>
+                        </div>
+                        <button class="close-envelope" id="closeEnvelope2025">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                    
+                    <div class="envelope-container" id="envelopeContainer2022" data-year="2022">
+                        <div class="envelope" id="envelope2022">
+                            <div class="envelope-year">2022</div>
+                            <i class="bi bi-heart heart-seal"></i>
+                            <h3>點擊打開信封</h3>
+                            <p>一份特別的生日驚喜</p>
+                        </div>
+                        <button class="close-envelope" id="closeEnvelope2022">
+                            <i class="bi bi-x"></i>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="envelope-nav" id="envelopeNav">
+                    <div class="envelope-dot active" data-year="2025"></div>
+                    <div class="envelope-dot" data-year="2022"></div>
+                </div>
+            </div>
+            
+            <div class="envelope-content" id="envelopeContent2025">
+                <div class="message-card" id="messageCard2025">
+                </div>
+            </div>
+            
+            <div class="envelope-content" id="envelopeContent2022">
+                <div class="message-card" id="messageCard2022">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>Made with <i class="bi bi-heart-fill"></i> for Xinyu</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const _$c = {
+                _2025: [60,100,105,118,32,99,108,97,115,115,61,34,99,97,114,100,45,104,101,97,100,101,114,34,62,60,105,32,99,108,97,115,115,61,34,98,105,32,98,105,45,104,101,97,114,116,34,62,60,47,105,62,60,104,51,62,35242,24859,30340,27427,22948,60,47,104,51,62,60,47,100,105,118,62,60,112,32,99,108,97,115,115,61,34,108,101,97,100,34,62,36317,38626,19978,27425,20570,32178,38913,32102,20320,27794,24819,21040,24050,32147,36942,20102,51,24180,65292,36889,27425,25105,25226,32178,38913,22823,32763,26032,20570,30340,26356,31934,32251,22909,30475,65292,24076,26395,20320,26371,21916,27489,12290,26178,38291,19981,31561,20154,65292,22914,20170,25105,20497,20063,37117,24478,22823,23416,29983,35722,25104,20102,30740,31350,29983,65292,25105,20170,24180,20063,35201,21435,24037,20316,20102,65288,25165,26377,37666,36023,29983,26085,31150,29289,32102,20320,65289,12290,60,47,112,62,60,112,32,99,108,97,115,115,61,34,108,101,97,100,34,62,38614,28982,29983,27963,36234,20358,36234,24537,65292,20294,35201,35352,24471,24448,24460,30340,27599,22825,20063,35201,20445,25345,38283,24515,20581,24247,12290,26410,20358,30340,26085,23376,21487,33021,26371,38754,33256,26356,22810,30340,25361,25136,65292,21029,25812,24515,65292,25105,20063,26371,38506,33879,20320,19968,36215,38754,23565,12290,24076,26395,25105,20497,26410,20358,30340,29983,27963,21487,20197,36234,20358,36234,22909,65292,28982,24460,35352,24471,20445,25345,36939,21205,65292,32380,32396,25361,25136,39340,25289,26494,12290,60,47,112,62,60,112,32,99,108,97,115,115,61,34,108,101,97,100,34,62,26368,24460,65292,31069,20320,29983,26085,24555,27138,65292,24179,23433,20581,24247,65281,24859,20320,65374,60,47,112,62,60,112,32,99,108,97,115,115,61,34,98,105,114,116,104,100,97,121,45,119,105,115,104,34,62,29983,26085,24555,27138,32,60,105,32,99,108,97,115,115,61,34,98,105,32,98,105,45,104,101,97,114,116,45,102,105,108,108,34,62,60,47,105,62,60,47,112,62,60,112,32,99,108,97,115,115,61,34,115,105,103,110,97,116,117,114,101,34,62,38515,20896,36562,32,183,32,50,48,50,53,47,51,47,56,60,47,112,62],
+                _2022: [60,100,105,118,32,99,108,97,115,115,61,34,99,97,114,100,45,104,101,97,100,101,114,34,62,60,105,32,99,108,97,115,115,61,34,98,105,32,98,105,45,104,101,97,114,116,34,62,60,47,105,62,60,104,51,62,35242,24859,30340,27427,22948,60,47,104,51,62,60,47,100,105,118,62,60,112,32,99,108,97,115,115,61,34,108,101,97,100,34,62,20170,22825,26159,20320,30340,29983,26085,65292,35352,24471,21435,24180,25105,29983,26085,26178,65292,20320,26159,31532,19968,20491,20659,35338,24687,32102,25105,30340,65292,37027,26178,20505,30340,25105,38754,33256,33879,35506,26989,21644,21319,23416,30340,22739,21147,65292,20320,30340,19968,21477,29983,26085,24555,27138,65292,24118,32102,29983,27963,22312,36855,24792,29983,27963,21644,22739,21147,20013,30340,25105,28331,26262,65292,37027,26178,20505,23601,35469,23450,20320,26159,25105,29983,21629,20013,29305,21029,30340,20154,12290,60,47,112,62,60,112,32,99,108,97,115,115,61,34,108,101,97,100,34,62,20170,22825,26159,20320,29983,26085,20195,34920,20320,21448,38263,22823,20102,19968,27506,65292,36942,21435,24190,20491,26376,25105,20497,37117,24456,24537,65292,20294,20037,20102,22909,20687,20063,25104,28858,20102,26085,24120,12290,26410,20358,30340,26085,23376,65292,20320,36681,21040,38651,27231,31995,65292,25105,20063,25104,28858,30740,31350,29983,65292,29983,27963,21487,33021,20063,22914,21516,20043,21069,19968,27171,20805,23526,65292,20294,27794,38364,20418,65292,25105,20497,36996,26159,33021,20598,29246,20986,20358,36208,36208,12290,60,47,112,62,60,112,32,99,108,97,115,115,61,34,108,101,97,100,34,62,38614,28982,25105,19968,30452,35201,20320,19981,35201,21741,21741,65292,20294,38627,36942,30340,26178,20505,21487,20197,20358,25214,25105,27794,38364,20418,25105,37117,26371,25910,30041,20320,30340,12290,36889,20123,25991,23383,26159,22312,21322,22812,23436,25104,30340,65292,24819,24517,20320,29694,22312,27491,22312,25265,33879,25105,30340,34915,26381,29087,30561,21543,65292,25105,21482,24819,36319,20320,35498,25105,24859,20320,65292,23601,22914,21516,20320,24859,25105,19968,27171,12290,38614,28982,26410,20358,30340,25361,25136,36996,24456,22810,65292,20294,20063,19981,38656,35201,21435,24819,37027,40636,22810,20102,65292,21191,25954,38754,23565,65292,25105,30456,20449,37117,33021,26377,26368,22909,30340,23433,25490,30340,65374,60,47,112,62,60,112,32,99,108,97,115,115,61,34,98,105,114,116,104,100,97,121,45,119,105,115,104,34,62,29983,26085,24555,27138,32,60,105,32,99,108,97,115,115,61,34,98,105,32,98,105,45,104,101,97,114,116,45,102,105,108,108,34,62,60,47,105,62,60,47,112,62,60,112,32,99,108,97,115,115,61,34,115,105,103,110,97,116,117,114,101,34,62,38515,20896,36562,32,183,32,50,48,50,50,47,51,47,55,60,47,112,62]
+            };
+            
+            function _decode(arr) {
+                return arr.map(function(c) { return String.fromCharCode(c); }).join('');
+            }
+            
+            function loadCardContent() {
+                const card2025 = document.getElementById('messageCard2025');
+                const card2022 = document.getElementById('messageCard2022');
+                if (card2025) card2025.innerHTML = _decode(_$c._2025);
+                if (card2022) card2022.innerHTML = _decode(_$c._2022);
+            }
+            
+            setupEnvelopeStack();
+            
+            function setupEnvelopeStack() {
+                const envelopes = document.querySelectorAll('.envelope-container');
+                const dots = document.querySelectorAll('.envelope-dot');
+                
+                envelopes.forEach((envelope) => {
+                    const year = envelope.getAttribute('data-year');
+                    
+                    envelope.addEventListener('click', function() {
+                        if (this.classList.contains('active') && !this.classList.contains('envelope-opened')) {
+                            openEnvelope(year);
+                        } else if (!this.classList.contains('active')) {
+                            switchToEnvelope(year);
+                        }
+                    });
+                    
+                    const closeBtn = document.getElementById(`closeEnvelope${year}`);
+                    closeBtn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        closeEnvelope(year);
+                    });
+                });
+                
+                dots.forEach((dot) => {
+                    dot.addEventListener('click', function() {
+                        const year = this.getAttribute('data-year');
+                        switchToEnvelope(year);
+                    });
+                });
+            }
+            
+            function switchToEnvelope(year) {
+                closeAllEnvelopes();
+                
+                document.querySelectorAll('.envelope-container').forEach(env => {
+                    env.classList.remove('active');
+                });
+                document.querySelectorAll('.envelope-dot').forEach(dot => {
+                    dot.classList.remove('active');
+                });
+                
+                const targetEnvelope = document.getElementById(`envelopeContainer${year}`);
+                const targetDot = document.querySelector(`.envelope-dot[data-year="${year}"]`);
+                
+                if (targetEnvelope) targetEnvelope.classList.add('active');
+                if (targetDot) targetDot.classList.add('active');
+            }
+            
+            function openEnvelope(year) {
+                const envelope = document.getElementById(`envelopeContainer${year}`);
+                const envelopeEl = document.getElementById(`envelope${year}`);
+                const envelopeContent = document.getElementById(`envelopeContent${year}`);
+                const stackContainer = document.getElementById('envelopeStackContainer');
+                
+                closeAllEnvelopes();
+                
+                envelope.classList.add('envelope-opened');
+                envelopeEl.classList.add('envelope-opened');
+                stackContainer.classList.add('envelopes-hidden');
+                
+                createConfetti();
+                
+                setTimeout(function() {
+                    envelopeContent.classList.add('show');
+                }, 200);
+            }
+            
+            function closeEnvelope(year) {
+                const envelope = document.getElementById(`envelopeContainer${year}`);
+                const envelopeEl = document.getElementById(`envelope${year}`);
+                const envelopeContent = document.getElementById(`envelopeContent${year}`);
+                const stackContainer = document.getElementById('envelopeStackContainer');
+                
+                envelope.classList.remove('envelope-opened');
+                envelopeEl.classList.remove('envelope-opened');
+                envelopeContent.classList.remove('show');
+                stackContainer.classList.remove('envelopes-hidden');
+            }
+            
+            function closeAllEnvelopes() {
+                document.querySelectorAll('.envelope-container').forEach(envelope => {
+                    const year = envelope.getAttribute('data-year');
+                    const envelopeEl = document.getElementById(`envelope${year}`);
+                    const envelopeContent = document.getElementById(`envelopeContent${year}`);
+                    
+                    envelope.classList.remove('envelope-opened');
+                    envelopeEl.classList.remove('envelope-opened');
+                    envelopeContent.classList.remove('show');
+                });
+                
+                document.getElementById('envelopeStackContainer').classList.remove('envelopes-hidden');
+            }
+
+            function createConfetti() {
+                const colors = ['#f9c5d5', '#f4a3bb', '#fce4eb', '#ec7a9e'];
+                const totalConfetti = 30;
+                
+                for (let i = 0; i < totalConfetti; i++) {
+                    const confetti = document.createElement('div');
+                    confetti.className = 'card-confetti';
+                    confetti.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                    confetti.style.left = Math.random() * 100 + '%';
+                    confetti.style.width = (Math.random() * 4 + 4) + 'px';
+                    confetti.style.height = confetti.style.width;
+                    
+                    document.body.appendChild(confetti);
+                    
+                    const animation = confetti.animate([
+                        { transform: 'translate3d(0,0,0)', opacity: 0.8 },
+                        { transform: `translate3d(${Math.random() * 150 - 75}px, ${Math.random() * 300 + 300}px, 0)`, opacity: 0 }
+                    ], {
+                        duration: Math.random() * 2000 + 1500,
+                        easing: 'cubic-bezier(0,0.9,0.57,1)',
+                        delay: Math.random() * 500
+                    });
+                    
+                    animation.onfinish = function() {
+                        confetti.remove();
+                    };
+                }
+            }
+
+
+            const CORRECT_HASH = '355f911a631e4159237ce877e94f10757a6a563f5ad1d0aa7279bf488213dd0c';
+            
+            async function sha256(message) {
+                const msgBuffer = new TextEncoder().encode(message);
+                const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                const hashArray = Array.from(new Uint8Array(hashBuffer));
+                const hashHex = hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                return hashHex;
+            }
+            
+            const passwordForm = document.getElementById('passwordForm');
+            const passwordInput = document.getElementById('passwordInput');
+            const passwordError = document.getElementById('passwordError');
+            const passwordModal = document.getElementById('passwordModal');
+            const passwordContainer = document.querySelector('.password-container');
+            
+            if (sessionStorage.getItem('xinyuAuthenticated') === 'true') {
+                passwordModal.style.display = 'none';
+                loadCardContent();
+            } else {
+                let attempts = 0;
+                const maxAttempts = 3;
+                
+                passwordForm.addEventListener('submit', async function(e) {
+                    e.preventDefault();
+                    const password = passwordInput.value;
+                    const inputHash = await sha256(password);
+                    
+                    if (inputHash === CORRECT_HASH) {
+                        sessionStorage.setItem('xinyuAuthenticated', 'true');
+                        
+                        loadCardContent();
+                        
+                        passwordModal.style.transition = 'opacity 0.6s ease';
+                        passwordModal.style.opacity = '0';
+                        setTimeout(() => {
+                            passwordModal.style.display = 'none';
+                        }, 600);
+                    } else {
+                        attempts++;
+                        passwordError.style.display = 'block';
+                        passwordInput.value = '';
+                        passwordInput.focus();
+                        
+                        passwordContainer.style.animation = 'shake 0.4s ease';
+                        setTimeout(() => {
+                            passwordContainer.style.animation = '';
+                        }, 400);
+                        
+                        if (attempts >= maxAttempts) {
+                            setTimeout(function() {
+                                window.location.href = "https://www.google.com";
+                            }, 1000);
+                        }
+                    }
+                });
+                
+                passwordInput.focus();
+            }
+        });
+    </script>
+    
+    <style>
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+    </style>
+</body>
+</html>
